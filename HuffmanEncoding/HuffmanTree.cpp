@@ -20,6 +20,7 @@ string HuffmanTree::decode()
 
 void HuffmanTree::printFreq()
 {
+    // need to adjust to ensure only prints leaf nodes
      stack<TreeNode*> branches{};
     TreeNode* curr = root;
 
