@@ -4,8 +4,9 @@ using namespace std;
 
 int main()
 {
+	HuffmanTree example = HuffmanTree("This is a test");
 
-	HuffmanTree::compress("This is a test string!!!!");
+	example.printFreq();
 
 	return 0;
 }

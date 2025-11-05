@@ -7,8 +7,8 @@ class TreeNode
 {
 public:
 	TreeNode(int val = 0, char c = '\0', TreeNode* left = nullptr, TreeNode* right = nullptr);
-	void setNext(TreeNode* next, bool left);
-	TreeNode* getNext(bool left);
+	void setNext(TreeNode* next, bool right);
+	TreeNode* getNext(bool right);
 	int getVal();
 	void setVal(int val);
 	void printNode();

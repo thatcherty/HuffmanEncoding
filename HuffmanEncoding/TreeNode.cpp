@@ -8,21 +8,21 @@ TreeNode::TreeNode(int val, char c, TreeNode* left, TreeNode* right)
 	this->right = right;
 }
 
-void TreeNode::setNext(TreeNode* next,  bool left)
+void TreeNode::setNext(TreeNode* next,  bool right)
 {
-	if (left)
-	{
-		this->left = next;
-	}
-	else
+	if (right)
 	{
 		this->right = next;
 	}
+	else
+	{
+		this->left = next;
+	}
 }
 
-TreeNode* TreeNode::getNext(bool left)
+TreeNode* TreeNode::getNext(bool right)
 {
-	return left ? this->left : this->right;
+	return right ? this->right : this->left;
 }
 
 int TreeNode::getVal()
