@@ -20,7 +20,6 @@ string HuffmanTree::decode()
 
 void HuffmanTree::printFreq()
 {
-    // need to adjust to ensure only prints leaf nodes
      stack<TreeNode*> branches{};
     TreeNode* curr = root;
 
@@ -30,15 +29,17 @@ void HuffmanTree::printFreq()
         while (curr)
         {
             branches.push(curr);
+
+            // print leaf node
+            if (!curr->getNext(0))
+            {
+                curr->printNode();
+            }
+
             curr = curr->getNext(0);
         }
 
         curr = branches.top();
-
-        if (curr)
-        {
-            curr->printNode();
-        }
 
         branches.pop();
 
@@ -72,6 +73,9 @@ vector<TreeNode*> HuffmanTree::frequencies(string s)
 
     return nodes;
 }
+
+// helper function
+
 
 void HuffmanTree::buildTree(vector<TreeNode*> nodes)
 {
