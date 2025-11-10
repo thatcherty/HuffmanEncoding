@@ -7,19 +7,15 @@ HuffmanTree::HuffmanTree(string s)
 
 void HuffmanTree::compress(string s)
 {
-
     frequencies(s);
     getMapping();
     encode(s);
-    
 }
 
 string HuffmanTree::decode()
 {
     string orig = "";
     TreeNode* curr = root;
-
-    
 
     for (char c : encoded)
     {

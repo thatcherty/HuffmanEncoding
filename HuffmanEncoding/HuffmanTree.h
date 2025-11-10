@@ -23,6 +23,7 @@ private:
 	void encode(string s);
 	template <typename cmp>
 	void buildTree(priority_queue<TreeNode*, vector<TreeNode*>, cmp>& nodes);
+
 	TreeNode* root;
 	unordered_map<char, string> mapping;
 	string encoded;
