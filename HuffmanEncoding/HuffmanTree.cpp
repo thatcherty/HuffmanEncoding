@@ -18,6 +18,18 @@ string HuffmanTree::decode()
     string orig = "";
     TreeNode* curr = root;
 
+    // special case for only one distinct character
+    if (!curr->getNext(1) && !curr->getNext(0))
+    {
+        for (char c : encoded)
+        {
+            orig += curr->getChar();
+        }
+
+        return orig;
+    }
+
+    // if more than one distinct character
     for (char c : encoded)
     {
         curr = curr->getNext(int(c)-48);
@@ -75,6 +87,13 @@ void HuffmanTree::getMapping()
 {
     if (!root) return;
 
+    // special case for only one distinct character
+    if (!root->getNext(1) && !root->getNext(0))
+    {
+        mapping[root->getChar()] = "0";
+        return;
+    }
+
     string path = "";
     stack<string> pathSoFar{};
     stack<TreeNode*> branches{};
@@ -122,6 +141,7 @@ void HuffmanTree::buildTree()
 
     if (!count) return; 
 
+    // if only one node
     if (count == 1)
     {
         root = nodes.top();
