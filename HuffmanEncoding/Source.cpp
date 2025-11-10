@@ -6,7 +6,7 @@ int main()
 {
 	HuffmanTree example = HuffmanTree("This is a test");
 
-	example.printFreq();
+	example.printMapping();
 
 	return 0;
 }

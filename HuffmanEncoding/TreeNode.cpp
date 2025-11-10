@@ -30,6 +30,11 @@ int TreeNode::getVal()
 	return this->val;
 }
 
+char TreeNode::getChar()
+{
+	return c;
+}
+
 void TreeNode::setVal(int val)
 {
 	this->val = val;

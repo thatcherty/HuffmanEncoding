@@ -10,6 +10,7 @@ public:
 	void setNext(TreeNode* next, bool right);
 	TreeNode* getNext(bool right);
 	int getVal();
+	char getChar();
 	void setVal(int val);
 	void printNode();
 

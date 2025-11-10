@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <stack>
+#include <queue>
 
 using namespace std;
 
@@ -14,11 +15,14 @@ public:
 	HuffmanTree(string s);
 	void compress(string s);
 	string decode();
-	void printFreq();
+	void printMapping();
 private:
-	vector<TreeNode*> frequencies(string s);
-	void buildTree(vector<TreeNode*> nodes);
+	void frequencies(string s);
+	void getMapping();
+	template <typename cmp>
+	void buildTree(priority_queue<TreeNode*, vector<TreeNode*>, cmp>& nodes);
 	TreeNode* root;
+	unordered_map<char, string> mapping;
 	string encoded;
 };
 

@@ -8,8 +8,8 @@ HuffmanTree::HuffmanTree(string s)
 void HuffmanTree::compress(string s)
 {
 
-    buildTree(frequencies(s));
-
+    frequencies(s);
+    getMapping();
     
 }
 
@@ -18,40 +18,54 @@ string HuffmanTree::decode()
     return string();
 }
 
-void HuffmanTree::printFreq()
+void HuffmanTree::printMapping()
 {
-     stack<TreeNode*> branches{};
-    TreeNode* curr = root;
+    //stack<TreeNode*> branches{};
+    //TreeNode* curr = root;
 
-    while (!(branches.empty()) || curr)
+    //while (!(branches.empty()) || curr)
+    //{
+    //    // search the left side
+    //    while (curr)
+    //    {
+    //        branches.push(curr);
+
+    //        // print leaf node
+    //        if (!curr->getNext(0))
+    //        {
+    //            curr->printNode();
+    //        }
+
+    //        curr = curr->getNext(0);
+    //    }
+
+    //    curr = branches.top();
+
+    //    branches.pop();
+
+    //    curr = curr->getNext(1);
+    //}
+
+    for (auto& m : mapping)
     {
-        // search the left side
-        while (curr)
-        {
-            branches.push(curr);
-
-            // print leaf node
-            if (!curr->getNext(0))
-            {
-                curr->printNode();
-            }
-
-            curr = curr->getNext(0);
-        }
-
-        curr = branches.top();
-
-        branches.pop();
-
-        curr = curr->getNext(1);
+        cout << m.first << ": " << m.second << endl;
     }
 
 }
 
-vector<TreeNode*> HuffmanTree::frequencies(string s)
+// helper function
+auto cmp = [](TreeNode* n1, TreeNode* n2) 
+{
+    return n1->getVal() > n2->getVal();
+};
+
+
+void HuffmanTree::frequencies(string s)
 {
     unordered_map<char, int> freq{};
-    vector<TreeNode*> nodes{};
+
+    // no need to sort
+    priority_queue<TreeNode*, vector<TreeNode*>, decltype(cmp)> nodes(cmp);
 
     // O(s.length())
     for (int i = 0; i < s.length(); i++)
@@ -62,22 +76,48 @@ vector<TreeNode*> HuffmanTree::frequencies(string s)
     // O(n = unique val in s)
     for (auto p : freq)
     {
-        nodes.push_back(new TreeNode(p.second, p.first));
+        nodes.push(new TreeNode(p.second, p.first));
     }
 
-    // O(nlogn) avg
-    sort(nodes.begin(), nodes.end(), [](TreeNode*& n1, TreeNode*& n2)
-        {
-            return n1->getVal() > n2->getVal();
-        });
-
-    return nodes;
+    buildTree(nodes);
 }
 
-// helper function
+void HuffmanTree::getMapping()
+{
+    if (!root) return;
 
+    string path = "";
+    stack<string> pathSoFar{};
+    stack<TreeNode*> branches{};
+    TreeNode* curr = root;
 
-void HuffmanTree::buildTree(vector<TreeNode*> nodes)
+    while (!branches.empty() || curr)
+    {
+        while (curr)
+        {
+            pathSoFar.push(path);
+            branches.push(curr);
+            path += "0";
+            curr = curr->getNext(0);
+        }
+
+        path = pathSoFar.top();
+        curr = branches.top();
+        pathSoFar.pop();
+        branches.pop();
+
+        if (!curr->getNext(1) && !curr->getNext(0))
+        {
+            mapping[curr->getChar()] = path;
+        }
+
+        path += "1";
+        curr = curr->getNext(1);
+    }
+}
+
+template <typename cmp>
+void HuffmanTree::buildTree(priority_queue<TreeNode*, vector<TreeNode*>, cmp>& nodes)
 {
     // iterate through each value in the vector
     // if one value, tree is finished
@@ -89,7 +129,7 @@ void HuffmanTree::buildTree(vector<TreeNode*> nodes)
 
     if (count == 1)
     {
-        root = nodes[0];
+        root = nodes.top();
         return;
     }
 
@@ -98,22 +138,16 @@ void HuffmanTree::buildTree(vector<TreeNode*> nodes)
     while (count - 1)
     {
         parent = new TreeNode();
+        TreeNode* top = nodes.top();
+        nodes.pop();
+        TreeNode* sec = nodes.top();
+        nodes.pop();
 
-        parent->setVal(nodes[count-1]->getVal() + nodes[count-2]->getVal());
-        parent->setNext(nodes[count-1], 0); // set left
-        parent->setNext(nodes[count-2], 1); // set right
+        parent->setVal(top->getVal() + sec->getVal());
+        parent->setNext(top, 0); // set left
+        parent->setNext(sec, 1); // set right
 
-        nodes.pop_back();
-        nodes.pop_back();
-
-        nodes.push_back(parent);
-
-        // O(nlogn) avg
-        sort(nodes.begin(), nodes.end(), [](TreeNode*& n1, TreeNode*& n2)
-            {
-                return n1->getVal() > n2->getVal();
-            });
-
+        nodes.push(parent);
         --count;
     }
 
