@@ -13,12 +13,14 @@ class HuffmanTree
 {
 public:
 	HuffmanTree(string s);
-	void compress(string s);
 	string decode();
 	void printMapping();
+	void printEncoded();
 private:
+	void compress(string s);
 	void frequencies(string s);
 	void getMapping();
+	void encode(string s);
 	template <typename cmp>
 	void buildTree(priority_queue<TreeNode*, vector<TreeNode*>, cmp>& nodes);
 	TreeNode* root;

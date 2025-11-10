@@ -10,47 +10,53 @@ void HuffmanTree::compress(string s)
 
     frequencies(s);
     getMapping();
+    encode(s);
     
 }
 
 string HuffmanTree::decode()
 {
-    return string();
+    string orig = "";
+    TreeNode* curr = root;
+
+    
+
+    for (char c : encoded)
+    {
+        curr = curr->getNext(int(c)-48);
+
+        if (curr->getChar() != '\0')
+        {
+            orig += curr->getChar();
+            curr = root;
+        }
+    }
+
+    return orig;
+}
+
+void HuffmanTree::encode(string s)
+{
+    for (char& c : s)
+    {
+        encoded += mapping[c];
+    }
 }
 
 void HuffmanTree::printMapping()
 {
-    //stack<TreeNode*> branches{};
-    //TreeNode* curr = root;
-
-    //while (!(branches.empty()) || curr)
-    //{
-    //    // search the left side
-    //    while (curr)
-    //    {
-    //        branches.push(curr);
-
-    //        // print leaf node
-    //        if (!curr->getNext(0))
-    //        {
-    //            curr->printNode();
-    //        }
-
-    //        curr = curr->getNext(0);
-    //    }
-
-    //    curr = branches.top();
-
-    //    branches.pop();
-
-    //    curr = curr->getNext(1);
-    //}
+    cout << "Huffman encoding for each character: " << endl;
 
     for (auto& m : mapping)
     {
         cout << m.first << ": " << m.second << endl;
     }
 
+}
+
+void HuffmanTree::printEncoded()
+{
+    cout << "Encoded: " << encoded << endl;
 }
 
 // helper function
