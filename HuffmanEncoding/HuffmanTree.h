@@ -21,11 +21,11 @@ private:
 	void frequencies(string s);
 	void getMapping();
 	void encode(string s);
-	template <typename cmp>
-	void buildTree(priority_queue<TreeNode*, vector<TreeNode*>, cmp>& nodes);
+	void buildTree();
 
 	TreeNode* root;
 	unordered_map<char, string> mapping;
+	unordered_map<char, int> freq;
 	string encoded;
 };
 

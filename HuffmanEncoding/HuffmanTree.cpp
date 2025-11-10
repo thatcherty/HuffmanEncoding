@@ -8,6 +8,7 @@ HuffmanTree::HuffmanTree(string s)
 void HuffmanTree::compress(string s)
 {
     frequencies(s);
+    buildTree();
     getMapping();
     encode(s);
 }
@@ -64,24 +65,10 @@ auto cmp = [](TreeNode* n1, TreeNode* n2)
 
 void HuffmanTree::frequencies(string s)
 {
-    unordered_map<char, int> freq{};
-
-    // no need to sort
-    priority_queue<TreeNode*, vector<TreeNode*>, decltype(cmp)> nodes(cmp);
-
-    // O(s.length())
     for (int i = 0; i < s.length(); i++)
     {
         ++freq[s[i]];
     }
-
-    // O(n = unique val in s)
-    for (auto p : freq)
-    {
-        nodes.push(new TreeNode(p.second, p.first));
-    }
-
-    buildTree(nodes);
 }
 
 void HuffmanTree::getMapping()
@@ -118,12 +105,18 @@ void HuffmanTree::getMapping()
     }
 }
 
-template <typename cmp>
-void HuffmanTree::buildTree(priority_queue<TreeNode*, vector<TreeNode*>, cmp>& nodes)
+void HuffmanTree::buildTree()
 {
     // iterate through each value in the vector
     // if one value, tree is finished
     // if two values, create root node and tree is finished
+    // no need to sort
+    priority_queue<TreeNode*, vector<TreeNode*>, decltype(cmp)> nodes(cmp);
+
+    for (auto p : freq)
+    {
+        nodes.push(new TreeNode(p.second, p.first));
+    }
     
     int count = nodes.size();
 
